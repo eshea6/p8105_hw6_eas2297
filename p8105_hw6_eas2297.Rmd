@@ -19,5 +19,21 @@ theme_set(theme_bw() + theme(legend.position = "bottom"))
 
 ## Problem 1
 
+First we need to read in the data.
 
+```{r}
+homicide_data = read_csv("./data/homicide-data.csv")
+```
+
+Next we will create a `city_state` variable and a binary variable indicating whether the homicide is solved. We will also omit the cities Dallas, TX; Phoenix, AZ; Kansas City, MO; and Tulsa, AL. Lastly, we will modify `victim_race` to have categories white and non-white, with white as the reference category, and change victim_age to a numeric variable.
+
+```{r}
+US_hom_data = homicide_data %>% 
+  mutate(state = toupper(state), city_state = str_c(city, state, sep = ", "),
+        solved = ifelse(disposition == "Closed without arrest" | disposition == "Open/No arrest", FALSE, TRUE)) %>% 
+  filter(city_state != "Dallas, TX", city_state != "Phoenix, AZ", city_state != "Kansas City, MO", city_state != "Tulsa, AL") %>% 
+  mutate(victim_race = ifelse(victim_race == "White", "White", "Non-White"),
+         victim_race = factor(victim_race, levels = c("White", "Non-White")),
+         victim_age  = as.numeric(victim_age))
+```
 
