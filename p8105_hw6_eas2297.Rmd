@@ -102,4 +102,9 @@ city_OR_df %>%
   ) 
 ```
 
+From the plot we see that most of the odds ratio estimates are below 1; this means that the odds of having a resolved homicide case for a non-white victim are generally lower than the odds of having a resolved homicide case for a white victim. However, a number of confidence intervals cross 1, making the association between victim race and case resolution less clear in some cities. 
+
+## Problem 2 
+
+
 
