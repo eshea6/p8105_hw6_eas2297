@@ -56,10 +56,39 @@ Using the saved object of the `glm` output, we will tidy and obtain the estimate
 Baltimore_log_reg %>% 
   broom::tidy() %>% 
   filter(term == "victim_raceNon-White") %>% 
-  mutate(OR = exp(estimate), 
+  mutate(est_OR = exp(estimate), 
         OR_CI_low = exp(estimate - 1.96*std.error),
         OR_CI_high = exp(estimate + 1.96*std.error)) %>% 
-  select(OR, OR_CI_low, OR_CI_high) %>% 
+  select(est_OR, OR_CI_low, OR_CI_high) %>% 
   knitr::kable(digits = 3)
 ```
+
+Now we will run the `glm` function and extract the adjusted odds ratio and confidence interval for each city.
+
+```{r}
+city_log_reg = 
+  US_hom_data %>% 
+  group_by(city_state) %>% 
+  nest() %>% 
+  mutate(models = map(data, ~glm(resolved ~ victim_age + victim_sex + victim_race, data = .x, family = binomial())),
+         models = map(models, broom::tidy)) %>% 
+  select(-data) %>% 
+  unnest()
+```
+
+```{r}
+city_OR_df = city_log_reg %>% 
+  filter(term == "victim_raceNon-White") %>% 
+  mutate(est_OR = exp(estimate), 
+        OR_CI_low = exp(estimate - 1.96*std.error),
+        OR_CI_high = exp(estimate + 1.96*std.error)) %>% 
+  select(city_state, est_OR, OR_CI_low, OR_CI_high)
+```
+
+With this dataframe containing ORs and confidence intervals for each city, we can make a plot.
+
+```{r}
+
+```
+
 
