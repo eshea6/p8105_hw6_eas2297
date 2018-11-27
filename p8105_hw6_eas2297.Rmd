@@ -151,6 +151,18 @@ bwt_data_clean %>%
   ) 
 ```
 
+Next we compare the above model (`bwt_model`) to two other models (`model one` and `model two`).
+
+```{r}
+model_one = lm(bwt ~ gaweeks + blength, data = bwt_data_clean)
+model_two = lm(bwt ~ bhead + blength + babysex + bhead*blength + bhead*babysex + blength*babysex + bhead*blength*babysex, data = bwt_data_clean)
+```
+
+We will make this comparison in terms of the cross-validated prediction error. 
+
+```{r}
+
+```
 
 
 
