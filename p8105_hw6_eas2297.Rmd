@@ -102,9 +102,38 @@ city_OR_df %>%
   ) 
 ```
 
-From the plot we see that most of the odds ratio estimates are below 1; this means that the odds of having a resolved homicide case for a non-white victim are generally lower than the odds of having a resolved homicide case for a white victim. However, a number of confidence intervals cross 1, making the association between victim race and case resolution less clear in some cities. 
+From the plot we see that most of the odds ratio estimates are below 1; this means that the odds of having a resolved homicide case for a non-white victim are generally lower than the odds of having a resolved homicide case for a white victim. However, a number of confidence intervals (a little less than half) cross 1, making the association between victim race and case resolution less clear in some cities. 
 
 ## Problem 2 
+
+First we need to load and clean the data for regression.
+
+Data cleaning steps include making certain variables into factor variables and recoding, in addition to removing the `pnumlbw` and `pnumsga` variable columns since seemingly no data was collected (all values are 0).
+
+```{r}
+birthweight_data = read_csv("./data/birthweight.csv")
+
+bwt_data_clean =
+  birthweight_data %>% 
+  mutate(babysex = as.factor(babysex), 
+         babysex = recode_factor(babysex, `1` = "male", `2` = "female"),
+         frace = as.factor(frace),
+         frace = recode_factor(frace, `1` = "White", `2` = "Black", `3` = "Asian", `4` = "Puerto Rican", `8` = "Other", `9` = "Unknown"),
+         malform = as.factor(malform), 
+         malform = recode_factor(malform, `0` = "absent", `1` = "present"),
+         mrace = as.factor(mrace), 
+         mrace = recode_factor(mrace, `1` = "White", `2` = "Black", `3` = "Asian", `4` = "Puerto Rican", `8` = "Other")) %>% 
+  select(-pnumlbw, -pnumsga)
+```
+
+Next a regression model will be constructed.
+
+```{r}
+bwt_model = lm(bwt ~ gaweeks + blength + ppwt + smoken + gaweeks*bhead, data = bwt_data_clean)
+```
+
+This model is based on the hypothesis that birthweight should be a product of growth indicators such as gestational age and length at birth, as well as "environmental" factors in utero such as mother's pre-pregnancy weight and average number of cigarettes smoked per day during pregnancy. In addition, since gestational age and length at birth are likely to be related, an interaction term between the two is a valid addition to the model. 
+
 
 
 
