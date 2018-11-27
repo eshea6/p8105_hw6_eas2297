@@ -134,6 +134,25 @@ bwt_model = lm(bwt ~ gaweeks + blength + ppwt + smoken + gaweeks*bhead, data = b
 
 This model is based on the hypothesis that birthweight should be a product of growth indicators such as gestational age and length at birth, as well as "environmental" factors in utero such as mother's pre-pregnancy weight and average number of cigarettes smoked per day during pregnancy. In addition, since gestational age and length at birth are likely to be related, an interaction term between the two is a valid addition to the model. 
 
+**Plot of residuals against fitted values:**
+
+```{r}
+bwt_data_clean %>% 
+  modelr::add_predictions(bwt_model) %>% 
+  modelr::add_residuals(bwt_model) %>% 
+  ggplot(aes(x = pred, y = resid)) + 
+  geom_point(alpha = 0.3) +
+  geom_smooth(aes(y = 0), linetype = "dashed") +
+  labs(
+    title = "Plot of residuals against fitted values",
+    x = "Fitted Value",
+    y = "Residual",
+    caption = "Data from birthweight data of roughly 4000 children"
+  ) 
+```
+
+
+
 
 
 
