@@ -26,7 +26,7 @@ First we need to read in the data.
 homicide_data = read_csv("./data/homicide-data.csv")
 ```
 
-Next we will create a `city_state` variable and a binary variable indicating whether the homicide is solved. We will also omit the cities Dallas, TX; Phoenix, AZ; Kansas City, MO; and Tulsa, AL. Lastly, we will modify `victim_race` to have categories white and non-white, with white as the reference category, and change victim_age to a numeric variable.
+Next we will create a `city_state` variable and a binary variable indicating whether the homicide is solved. We will also omit the cities Dallas, TX; Phoenix, AZ; Kansas City, MO; and Tulsa, AL. Lastly, we will modify `victim_race` to have categories `white` and `non-white`, with `white` as the reference category, and change `victim_age` to a numeric variable.
 
 ```{r}
 US_hom_data = homicide_data %>% 
